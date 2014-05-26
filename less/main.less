@@ -1,0 +1,150 @@
+@import "bootstrap/bootstrap.less";
+
+h1, .h1,
+h2, .h2,
+h3, .h3 {
+	margin-top: @line-height-computed * 2;
+	margin-bottom: @line-height-computed;	
+}
+
+h1, .h1 {
+	letter-spacing: -0.05em;
+}
+
+h2, .h2 {
+	letter-spacing: -0.025em;
+}
+
+blockquote {
+	font-style: italic;
+	margin-left: -@line-height-computed;
+}
+
+pre {
+	@pre-font-size: 16px;
+	margin-bottom: @line-height-computed;
+	border: none;
+	border-radius: 0;
+	background-color: #333;
+	font-size: 16px;
+	padding: @pre-font-size * 1.5;
+}
+
+.btn {
+	.transition(0.4s);
+	font-family: @font-family-ui;
+	
+	-webkit-box-shadow: 0 1px 0 rgba(0,0,0,.05), inset 0 1px 0 rgba(255,255,255,0.25);
+    box-shadow: 0 1px 0 rgba(0,0,0,.05), inset 0 1px 0 rgba(255,255,255,0.25);
+
+	&:active,
+  	&.active {    	
+      	.box-shadow(inset 0 1px 0 rgba(0,0,0,.05));
+  	}
+
+	.glyphicon {
+		color: @brand-success;
+		margin-right: -2px;
+	}
+}
+
+.btn-default {
+	&:hover,
+	&:focus,
+	&:active,
+	&.active,
+	.open .dropdown-toggle& {
+		background-color: darken(@btn-default-bg, 1%);
+	}
+}
+
+.header {
+	background-color: @brand-success;
+	color: #fff;
+	height: 800px;
+
+	.container {
+		height: 100%;
+		position: relative;
+	}
+}
+
+.label {
+	font-weight: 600;
+	border-radius: 2px;
+}
+
+.meta {
+	font-family: @font-family-ui;
+	font-size: @font-size-small;
+	font-weight: 400;
+	margin-bottom: 0;
+
+	.date {
+		margin-right:8px;
+	}
+
+	.label {
+		margin-right: 2px;
+		font-size: 100%;
+		
+	}
+}
+
+.subtitle {
+	font-size: 28px;
+	margin-top: 0;
+	line-height: @line-height-computed;
+	margin-bottom: @line-height-computed / 4;
+	font-weight: 300;
+}
+
+#home {
+	.post-list {
+		h2 {
+			//margin-bottom: 0;
+			//font-size: 33px;
+			margin-bottom: @line-height-computed / 2;
+		}
+
+		.subtitle {
+			//font-size: 22px;			
+			//margin-bottom: 0;
+		}
+
+		.meta {
+			//font-size: 14px;
+		}
+
+		.post {
+			border-bottom: 1px solid @gray-lighter;
+			padding-bottom: @line-height-computed * 2;
+
+			.links {
+				margin-top: @line-height-computed;
+			}
+		}
+	}
+}
+
+
+#post {
+	.header {
+		margin-bottom:  @line-height-computed * 2;
+	}
+}
+
+
+
+
+
+
+.post-title {
+	position: absolute;
+	bottom: @line-height-computed * 2;
+	width: 100%;
+
+	h1 {
+		margin-bottom: (@line-height-computed / 2);
+	}
+}
