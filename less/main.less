@@ -1,5 +1,9 @@
 @import "bootstrap/bootstrap.less";
 
+html, body {
+	height:100%;
+}
+
 h1, .h1,
 h2, .h2,
 h3, .h3 {
@@ -58,11 +62,16 @@ pre {
 	}
 }
 
+.page {
+	height: 100%;
+}
+
 .header {
 	background-color: @brand-success;
 	color: #fff;
-	height: 800px;
-
+	max-height: 800px;
+	height: 100%;
+	
 	.container {
 		height: 100%;
 		position: relative;
