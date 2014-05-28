@@ -52,19 +52,37 @@
 }
 
 #nav {
+	.transition(0.4s);
 	position: fixed;
-	color: #fff;
+	padding:16px;
+	color: @gray;
 	font-weight: 900;
 	z-index: 99;
-	background: rgba(255,255,255,0.8);
+	background: rgba(255,255,255,0.95);
 	width: 100%;
+	height:@line-height-computed * 2;
 	.box-shadow(0 1px 1px rgba(0,0,0,0.25));
 
+	top:-(@line-height-computed * 2);
+
+	&.headroom--not-top.headroom--pinned {
+		top:0;
+	}
+
 	a {
+		.transition(0.2s);
 		color: @gray;
-		font-weight: 400;
+		&:hover {
+			margin-left:-4px;
+		}
+	}
+
+	.title {
 		font-family: @font-family-sans-serif;
-		margin-left: @line-height-computed / 2;
+		font-weight: 300;
+		position: absolute;
+		top:13px;
+		left:50px;
 	}
 }
 
