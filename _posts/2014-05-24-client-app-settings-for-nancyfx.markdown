@@ -3,7 +3,7 @@ layout: post
 title:  "Client app settings for nancyfx"
 subtitle:	"A neat little nuget package for pushing app settings down to javascript from the server side."
 date:   2014-05-23 00:14:48
-headerBackgroundColor:	"#d9534f"
+header_background_color:	"#d9534f"
 categories: articles
 tags: nancyfx c#
 header_image_width: 1920

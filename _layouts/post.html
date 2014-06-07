@@ -6,11 +6,20 @@ layout: default
 	<a class="back-btn" href="/"><span class="glyphicon glyphicon-chevron-left"></span></a> <span class="title">// TODO</span>
 </header>
 
+{% if page.header_image %}
+	<div class="bg-photo-wrapper">
+		<img class="bg-photo" src="{{ page.header_image }}" style="min-width: {{ 800 | divided_by: page.header_image_height | times: page.header_image_width }}px;" />
+	</div>
+{% endif %}
+
 <div id="post" class="page">	
+
+{% if page.header_image %}
+	<div id="header">
+{% else %}
 	<div id="header" style="background-color: {{ page.headerBackgroundColor }};">
-		{% if page.header_image %}
-			<img class="bg-photo" src="{{ page.header_image }}" style="min-width: {{ 800 | divided_by: page.header_image_height | times: page.header_image_width }}px;" />
-		{% endif %}
+{% endif %}
+		
 		<a id="back-btn" href="/"><span class="glyphicon glyphicon-chevron-left"></span></a>
 		<div class="container">
 			<div class="row post-title">

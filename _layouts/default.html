@@ -24,7 +24,12 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+
+    {% if page.header_background_color %}
+      <body style="background-color: {{ page.header_background_color }};">
+    {% else %}
+      <body>
+    {% endif %}
       
       {{ content }}
 

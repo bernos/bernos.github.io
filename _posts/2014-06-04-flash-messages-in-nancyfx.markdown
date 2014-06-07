@@ -3,7 +3,7 @@ layout: post
 title:  "Flash messages in nancyfx"
 subtitle:	"An implementation of the popular flash messages pattern for nancyfx"
 date:   2014-05-23 00:14:48
-headerBackgroundColor:	"#d9534f"
+header_background_color:	"#855425"
 categories: articles
 tags: nancyfx c#
 header_image: "/img/flash.jpg"

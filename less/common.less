@@ -1,3 +1,23 @@
+@header-max-height: 800px;
+@header-image-width: 1600px;
+@header-image-height: 1200px;
+
+.bg-photo-wrapper {
+	width: 100%; 
+	height: @header-max-height; 
+	overflow:hidden; 
+	position: relative;
+
+	.bg-photo {
+		position: absolute;
+		top:0;
+		width: 100%;
+		min-width: ceil((@header-max-height / @header-image-height) * @header-image-width); //1068px;
+		overflow: hidden;
+	}
+}
+
+
 .btn {
 	.transition(0.4s);
 	font-family: @font-family-ui;
@@ -28,6 +48,10 @@
 
 .page {
 	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	overflow: auto;
 }
 
 #back-btn {
@@ -87,24 +111,17 @@
 
 #header {
 
-	@header-max-height: 800px;
-	@header-image-width: 1600px;
-	@header-image-height: 1200px;
+	
 
-	background-color: @gray;
+	//background-color: @gray;
 	color: rgba(255,255,255,0.9);
 	max-height: @header-max-height;
 	height: 100%;
-	margin-bottom:  @line-height-computed * 2;
+	//margin-bottom:  @line-height-computed * 2;
 	overflow: hidden;
 	position: relative;
 
-	.bg-photo {
-		position: absolute;
-		top:0;
-		width: 100%;
-		min-width: ceil((@header-max-height / @header-image-height) * @header-image-width); //1068px;
-	}
+	
 	
 	.container {
 		height: 100%;
@@ -121,6 +138,11 @@
 	a {
 		color:#fff;
 	}
+}
+
+#content {
+	padding-top:  @line-height-computed * 2;
+	background: #fff;
 }
 
 .label {
