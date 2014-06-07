@@ -4,8 +4,13 @@ title:  "Client app settings for nancyfx"
 subtitle:	"A neat little nuget package for pushing app settings down to javascript from the server side."
 date:   2014-05-23 00:14:48
 headerBackgroundColor:	"#d9534f"
-categories: nancyfx c#
+categories: articles
+tags: nancyfx c#
+header_image_width: 1920
+header_image_height: 800
 ---
+
+width : {{ header_image_width }}
 
 Provides a simple API that makes sharing configuration data between your Nancy application on the server and your javascript in the browser simple.
 
