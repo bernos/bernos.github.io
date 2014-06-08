@@ -2,3 +2,17 @@ name: "// TODO"
 subtitle: Personal blog of Brendan McMahon
 markdown: redcarpet
 pygments: true
+defaults:
+  -
+    scope:
+      path: "" # empty string for all files
+    values:
+      layout: "post"
+      header_image_width: 1920
+  -
+    scope:
+      path: "about/blog"
+      type: "post"
+    values:
+      layout: "meta-blog" # overrides previous default layout
+      author: "Dr. Hyde"
