@@ -2,29 +2,111 @@
 
 	var lineHeight = 33;
 
-	$('#skip-btn').click(function() {
-		$('.page').animate({
-			scrollTop: $('#content').offset().top
+	/**
+	 * Do we use 3d accelerated css? We use it anywhere it is supported, except
+	 * chrome under windows, because it stuffs up font rendering
+	 */
+	var using3d = (function() {
+		return Modernizr.csstransforms3d && !(/Chrome/.test(navigator.userAgent) && /Windows/.test(navigator.userAgent));
+	})();
+
+	/**
+	 * Precache some commonly accessed dom elements
+	 */
+	$bgImage 			= $('.bg-photo');
+	$header 			= $('#header');
+	$postTitle 			= $('.post-title');
+	$postHeading 		= $('.post-title h1');
+	$postSubHeading 	= $('.post-title h2');
+	$meta 				= $('#header .meta');
+	$skipButtonWrapper 	= $('.skip-btn-wrapper');
+	$skipButton 		= $('#skip-btn');
+	$page 				= $('.page');
+	$content			= $('#content');
+
+	/**
+	 * Polyfill for requestAnimationFrame api
+	 */
+	var requestAnimFrame = (function () {
+      	var func = window.requestAnimationFrame ||
+        	window.webkitRequestAnimationFrame ||
+          	window.mozRequestAnimationFrame ||
+          	window.oRequestAnimationFrame ||
+          	window.msRequestAnimationFrame ||
+          	
+          	function (callback, element) {
+          		window.setTimeout(callback, 1000 / 60);
+          	};
+
+      	// apply to our window global to avoid illegal invocations (it's a native)
+      	return function (callback, element) {
+          	func.apply(window, [callback, element]);
+      	};
+  	})();
+
+  	/**
+  	 * Set up skip button
+  	 */
+	$skipButton.click(function() {
+		$page.animate({
+			scrollTop: $content.offset().top
 		}, 400);
 	});
 
+	/**
+	 * Scroll loop function using only non-accelerated css properties such as
+	 * margin and position. We use this when no translate3d is available, or
+	 * when we are on desktop, to overcome some font-rendering artifacts when
+	 * using translate3d in desktop webkit
+	 */
+	function updateHeaderContentOnScroll2d() {
+		var h = $header.height();
+		var r = $page.scrollTop() / h;
+		var s = r * (h * 0.25);
 
-	$page = $('.page');
-	$header = $('#header');
-	$bgImage = $('.bg-photo');
-	$postTitle = $('.post-title');
-	$skipButtonWrapper = $('.skip-btn-wrapper');
-	$postHeading = $('.post-title h1');
-	$postSubHeading = $('.post-title h2');
-	$meta = $('#header .meta');
-	$bgImage.css('transform', 'translate3d(0,0,0)')
+		console.log(s)
 
-	// TODO: Use requestAnimationframe for transitions.
+		$bgImage.fadeTo(0, 1 - r);
 
-	function onScroll() {
+		$postTitle.css('bottom', 33 + s);
+		//$postHeading.css('margin-bottom', 16.5 + (s * 4));
+		$skipButtonWrapper.css('margin-top', 33 + (s * 2));
+	}
+
+	/**
+	 * Scroll loop function that uses hardware accelerated css properties
+	 */
+	function updateHeaderContentOnScroll3d() {
+		var h = $header.height();
+		var r = $page.scrollTop() / h;
+		var s = r * (h * 0.25);
+
+		$bgImage.fadeTo(0, 1 - r);
+
+		// Using 3d
+		$postTitle.css('transform', 'translate3d(0,'+ -s +'px,0)');
+		$postHeading.css('transform', 'translate3d(0,'+ -s * 2  +'px,0)');
+		$postSubHeading.css('transform', 'translate3d(0,'+ -s * 2 +'px,0)');
+		$meta.css('transform', 'translate3d(0,'+ -s*2 +'px,0)');
+	}
+
+	var updateHeaderContentOnScroll = updateHeaderContentOnScroll2d;
+
+	/**
+	 * Set up appropriate scroll loop handlers based on browser caps
+	 */
+	if (using3d) {
+		$bgImage.css('transform', 'translate3d(0,0,0)'); // Force acceleration of bg image for opacity fade
+		updateHeaderContentOnScroll = updateHeaderContentOnScroll3d;
+	}
+	
+	function animationLoop() {
+		requestAnimFrame(animationLoop);
+		updateHeaderContentOnScroll();
+
+		/*
 		var headerHeight = $header.height();
 		var r = $page.scrollTop() / headerHeight;
-		console.log("scroll", 1 - r);
 
 		$bgImage.fadeTo(0, 1 - r);
 
@@ -35,7 +117,7 @@
 		$postHeading.css('transform', 'translate3d(0,'+ -2 * (separation)  +'px,0)');
 		$postSubHeading.css('transform', 'translate3d(0,'+ -(separation) +'px,0)');
 		$meta.css('transform', 'translate3d(0,'+ -(separation) +'px,0)');
-
+		*/
 
 		// Using standard css
 		//$postTitle.css('bottom', 33 + ((headerHeight * 0.5) * r));
@@ -43,7 +125,9 @@
 		//$postHeading.css('margin-bottom', 16.5 + (lineHeight * 6 * r));
 	}
 
-//	setInterval(onScroll, 5)
+	requestAnimFrame(animationLoop);
+
+	//setInterval(onScroll, 5)
 
 
 	var nav = document.getElementById('nav');
