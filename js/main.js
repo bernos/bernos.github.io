@@ -3,6 +3,15 @@
 	var lineHeight = 33;
 
 	/**
+	 * Min level to fade the bg photo out to when scrolling
+	 */
+	var bgImageMinOpacity = 0.5;
+
+	var bgImageScrollSpeed = 0.5;
+
+	var titleScrollSpeed = 0.5;
+
+	/**
 	 * Do we use 3d accelerated css? We use it anywhere it is supported, except
 	 * chrome under windows, because it stuffs up font rendering
 	 */
@@ -61,16 +70,12 @@
 	 */
 	function updateHeaderContentOnScroll2d() {
 		var h = $header.height();
-		var r = $page.scrollTop() / h;
-		var s = r * (h * 0.25);
+		var s = $page.scrollTop();
+		var r = s / h;
 
-		console.log(s)
-
-		$bgImage.fadeTo(0, 1 - r);
-
-		$postTitle.css('bottom', 33 + s);
-		//$postHeading.css('margin-bottom', 16.5 + (s * 4));
-		$skipButtonWrapper.css('margin-top', 33 + (s * 2));
+		$bgImage.fadeTo(0, 1 - (r * bgImageMinOpacity));
+		$bgImage.css('top', -s * bgImageScrollSpeed);
+		$postTitle.css('bottom', 33 + s * titleScrollSpeed);
 	}
 
 	/**
@@ -78,16 +83,12 @@
 	 */
 	function updateHeaderContentOnScroll3d() {
 		var h = $header.height();
-		var r = $page.scrollTop() / h;
-		var s = r * (h * 0.25);
+		var s = $page.scrollTop();
+		var r = s / h;
 
-		$bgImage.fadeTo(0, 1 - r);
-
-		// Using 3d
-		$postTitle.css('transform', 'translate3d(0,'+ -s +'px,0)');
-		$postHeading.css('transform', 'translate3d(0,'+ -s * 2  +'px,0)');
-		$postSubHeading.css('transform', 'translate3d(0,'+ -s * 2 +'px,0)');
-		$meta.css('transform', 'translate3d(0,'+ -s*2 +'px,0)');
+		$bgImage.fadeTo(0, 1 - (r * bgImageScrollSpeed));
+		$bgImage.css('transform', 'translate3d(0,'+ -s * bgImageScrollSpeed +'px,0)');
+		$postTitle.css('transform', 'translate3d(0,'+ -s * titleScrollSpeed +'px,0)');
 	}
 
 	var updateHeaderContentOnScroll = updateHeaderContentOnScroll2d;
