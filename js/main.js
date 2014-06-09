@@ -13,6 +13,8 @@
 
 	var titleScrollSpeed = 0.5;
 
+	var previousScrollTop = 0;
+
 	/**
 	 * Do we use 3d accelerated css? We use it anywhere it is supported, except
 	 * chrome under windows, because it stuffs up font rendering
@@ -25,6 +27,7 @@
 	/**
 	 * Precache some commonly accessed dom elements
 	 */
+	$nav 				= $('#nav');
 	$backButton			= $('#back-btn');
 	$bgImage 			= $('.bg-photo');
 	$header 			= $('#header');
@@ -66,6 +69,9 @@
 		}, 400);
 	});
 
+	var headerTop = -lineHeight * 2;
+	var previousHeaderTop = headerTop;
+
 	/**
 	 * Scroll loop function using only non-accelerated css properties such as
 	 * margin and position. We use this when no translate3d is available, or
@@ -75,7 +81,29 @@
 	function updateHeaderContentOnScroll2d() {
 		var h = $header.height();
 		var s = $page.scrollTop();
+		var d = s - previousScrollTop;
 		var r = s / h;
+
+		if (s < h && d < 0) {
+			headerTop += d * 1.5;
+		} else {
+			headerTop -= d * 1.5;			
+		}
+
+		if (headerTop > 0) {
+			headerTop = 0;
+		}
+
+		if (headerTop < -lineHeight * 2) {
+			headerTop = -lineHeight * 2;
+		}
+
+		if (headerTop != previousHeaderTop) {
+			$nav.css('top', headerTop);
+		}
+
+		previousScrollTop = s;
+		previousHeaderTop = headerTop;
 
 		if (s > headerHeight) {
 			return;
@@ -83,7 +111,7 @@
 
 		$bgImage.fadeTo(0, 1 - (r * bgImageMinOpacity));
 		$bgImage.css('top', Math.round(-s * bgImageScrollSpeed));
-		$postTitle.css('bottom', Math.round(33 + s * titleScrollSpeed));
+		$postTitle.css('bottom', Math.round(lineHeight + s * titleScrollSpeed));
 	}
 
 	/**
@@ -92,7 +120,29 @@
 	function updateHeaderContentOnScroll3d() {
 		var h = $header.height();
 		var s = $page.scrollTop();
+		var d = s - previousScrollTop;
 		var r = s / h;
+
+		if (s < h && d < 0) {
+			headerTop += d * 1.5;
+		} else {
+			headerTop -= d * 1.5;			
+		}
+
+		if (headerTop > 0) {
+			headerTop = 0;
+		}
+
+		if (headerTop < -lineHeight * 2) {
+			headerTop = -lineHeight * 2;
+		}
+
+		if (headerTop != previousHeaderTop) {
+			$nav.css('transform', 'translate3d(0,' + (headerTop + lineHeight * 2) + 'px,0)')
+		}
+
+		previousScrollTop = s;
+		previousHeaderTop = headerTop;
 
 		if (s > headerHeight) {
 			return;
@@ -109,45 +159,17 @@
 	 * Set up appropriate scroll loop handlers based on browser caps
 	 */
 	if (using3d) {		
+		$nav.css('transform', 'translate3d(0,0,0)');
 		updateHeaderContentOnScroll = updateHeaderContentOnScroll3d;
 	}
 	
 	function animationLoop() {
 		requestAnimFrame(animationLoop);
 		updateHeaderContentOnScroll();
-
-		/*
-		var headerHeight = $header.height();
-		var r = $page.scrollTop() / headerHeight;
-
-		$bgImage.fadeTo(0, 1 - r);
-
-		var separation = ((headerHeight * 0.1) * r);
-
-		// Using 3d
-		$postTitle.css('transform', 'translate3d(0,'+ -(separation) +'px,0)');
-		$postHeading.css('transform', 'translate3d(0,'+ -2 * (separation)  +'px,0)');
-		$postSubHeading.css('transform', 'translate3d(0,'+ -(separation) +'px,0)');
-		$meta.css('transform', 'translate3d(0,'+ -(separation) +'px,0)');
-		*/
-
-		// Using standard css
-		//$postTitle.css('bottom', 33 + ((headerHeight * 0.5) * r));
-		//$skipButtonWrapper.css('margin-top', 33 + (lineHeight * 6 * r));
-		//$postHeading.css('margin-bottom', 16.5 + (lineHeight * 6 * r));
 	}
 
-	requestAnimFrame(animationLoop);
+	
 
-	//setInterval(onScroll, 5)
-
-
-	var nav = document.getElementById('nav');
-
-	if (nav) {
-		var headroom = new Headroom(document.getElementById('nav'));
-		headroom.init();
-	}
 
 
 	function refreshBgPhotoSize() {
@@ -155,5 +177,7 @@
 	}
 
 	$(window).resize(refreshBgPhotoSize);
+
+	requestAnimFrame(animationLoop);
 	refreshBgPhotoSize();
 })();
