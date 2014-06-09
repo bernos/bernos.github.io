@@ -2,10 +2,12 @@
 
 	var lineHeight = 33;
 
+	var headerHeight = 800;
+
 	/**
 	 * Min level to fade the bg photo out to when scrolling
 	 */
-	var bgImageMinOpacity = 0.5;
+	var bgImageMinOpacity = 0.9;
 
 	var bgImageScrollSpeed = 0.5;
 
@@ -16,12 +18,14 @@
 	 * chrome under windows, because it stuffs up font rendering
 	 */
 	var using3d = (function() {
+		//return true;
 		return Modernizr.csstransforms3d && !(/Chrome/.test(navigator.userAgent) && /Windows/.test(navigator.userAgent));
 	})();
 
 	/**
 	 * Precache some commonly accessed dom elements
 	 */
+	$backButton			= $('#back-btn');
 	$bgImage 			= $('.bg-photo');
 	$header 			= $('#header');
 	$postTitle 			= $('.post-title');
@@ -73,9 +77,13 @@
 		var s = $page.scrollTop();
 		var r = s / h;
 
+		if (s > headerHeight) {
+			return;
+		}
+
 		$bgImage.fadeTo(0, 1 - (r * bgImageMinOpacity));
-		$bgImage.css('top', -s * bgImageScrollSpeed);
-		$postTitle.css('bottom', 33 + s * titleScrollSpeed);
+		$bgImage.css('top', Math.round(-s * bgImageScrollSpeed));
+		$postTitle.css('bottom', Math.round(33 + s * titleScrollSpeed));
 	}
 
 	/**
@@ -86,9 +94,13 @@
 		var s = $page.scrollTop();
 		var r = s / h;
 
-		$bgImage.fadeTo(0, 1 - (r * bgImageScrollSpeed));
-		$bgImage.css('transform', 'translate3d(0,'+ -s * bgImageScrollSpeed +'px,0)');
-		$postTitle.css('transform', 'translate3d(0,'+ -s * titleScrollSpeed +'px,0)');
+		if (s > headerHeight) {
+			return;
+		}
+
+		$bgImage.fadeTo(0, 1 - (r * bgImageMinOpacity));
+		$bgImage.css('transform', 'translate3d(0,'+ (-s * bgImageScrollSpeed) +'px,0)');
+		$postTitle.css('transform', 'translate3d(0,'+ (-s * titleScrollSpeed) +'px,0)');
 	}
 
 	var updateHeaderContentOnScroll = updateHeaderContentOnScroll2d;
@@ -96,8 +108,7 @@
 	/**
 	 * Set up appropriate scroll loop handlers based on browser caps
 	 */
-	if (using3d) {
-		$bgImage.css('transform', 'translate3d(0,0,0)'); // Force acceleration of bg image for opacity fade
+	if (using3d) {		
 		updateHeaderContentOnScroll = updateHeaderContentOnScroll3d;
 	}
 	
@@ -140,10 +151,7 @@
 
 
 	function refreshBgPhotoSize() {
-		console.log("refreshing size", arguments)
-
-		$bgImage.css('left', ($(window).width() - $bgImage.width()) / 2);
-
+		$('.bg-photo.bg-photo-centered').css('left', ($(window).width() - $bgImage.width()) / 2);
 	}
 
 	$(window).resize(refreshBgPhotoSize);
