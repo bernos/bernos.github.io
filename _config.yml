@@ -1,7 +1,7 @@
 name: "// TODO"
 subtitle: Personal blog of Brendan McMahon
 markdown: redcarpet
-pygments: true
+highlighter: pygments
 defaults:
   -
     scope:

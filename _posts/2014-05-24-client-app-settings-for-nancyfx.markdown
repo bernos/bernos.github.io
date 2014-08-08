@@ -10,8 +10,6 @@ header_image_width: 1920
 header_image_height: 800
 ---
 
-width : {{ header_image_width }}
-
 Provides a simple API that makes sharing configuration data between your Nancy application on the server and your javascript in the browser simple.
 
 ## Features
