@@ -1,0 +1,3 @@
+Make any full width images 945px wide
+
+Default header image size 1920 x 800
